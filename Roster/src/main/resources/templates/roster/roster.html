@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>勤怠管理表</title>
+</head>
+<script src="roster.js"></script>
+<link rel="stylesheet" href="roster.css">
+<body onload="onLoad();">
+<form name="roster" action="/roster" method="POST">
+  <div id="allArea" style="text-align:center;">
+    <h2>勤怠管理表</h2>
+    <div style="text-align:center;">
+      <button type="button" style="margin-right:20px;" onClick="monthChange(true);">＜前月</button>
+        <span>
+			 "${strNowYear}"年"${strNowMonth}"月
+        </span>
+      <button type="button" style="margin-left:20px;" onClick="monthChange(false);">翌月＞</button>
+    </div>
+    <div style="margin-top:20px;">
+      <button type="button" name="btnStart" style="margin-right:20px;" onClick="frmSubmit(true);">業務開始</button>
+      <button type="button" name="btnEnd" onClick="frmSubmit(false);">業務終了</button>
+    </div>
+    <!-- 勤務表作成開始 -->
+    <table border="1" class="border" style="margin:auto; margin-top:20px;">
+      <tr>
+        <td width="200px" class="dispDay">日付</td>
+        <td width="200px" class="dispDay">始業時間</td>
+        <td width="200px" class="dispDay">終業時間</td>
+      </tr>
+      out.makeKinmuhyoHtml();
+    </table>
+    <!-- 勤務表作成終了 -->
+  </div>
+  <!-- 隠し項目（パラメータ）-->
+  <input type="hidden" name="startFlg" value="">
+  <input type="hidden" name="endFlg" value="">
+  <input type="hidden" name="strYear" value="">
+  <input type="hidden" name="strMonth" value="">
+  <input type="hidden" name="dispYM" value="${dispYM}">
+  <input type="hidden" name="nowYM" value="${nowYM}">
+  <input type="hidden" name="numYoubi" value="${nowNumYoubi}">
+</form>
+</body>
+</html>
