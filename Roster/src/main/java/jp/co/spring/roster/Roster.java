@@ -11,11 +11,13 @@ import java.util.HashMap;
 
 public class Roster {
 
+    // インスタンス作成
 	CommonFunction func = CommonFunction.getInstance();
 	CommonCalender cal = CommonCalender.getInstance();
 
 	// 表示する勤務表の作成
-	public void makeKinmuhyoHtml(HashMap<String, Object> dataMap) throws Exception {
+	protected String makeRosterHtml(HashMap<String, Object> dataMap, RosterEntity entity) throws Exception {
+        StringBuilder makeRosterHtml = new StringBuilder(); 
 		try {
 		    String startFlg = func.nullToSpace((String)dataMap.get("startFlg"));
 		    String endFlg = func.nullToSpace((String)dataMap.get("endFlg"));
@@ -28,12 +30,25 @@ public class Roster {
 		    String strNowMonth = func.lpad(Integer.toString(intNowMonth), 2, "0", true);
 		    int intNowDate = dateTime.getDayOfMonth();
 		    String strNowDate  = func.lpad(Integer.toString(intNowDate), 2, "0", true);
-		    String strNowYmd = strNowYear + strNowMonth + strNowDate;
+		    String strNowYmd = strNowYear + strNowMonth + strNowDate;		    
+		    entity.setNowYear(strNowYear);
+		    entity.setNowMonth(strNowMonth);
+		    int intYear;
+		    int intMonth;
+     	    if(!Constant.BLANK.equals(strYear) && !Constant.BLANK.equals(strMonth)) {
+    		    intYear  = Integer.parseInt(strYear);
+    		    intMonth = Integer.parseInt(strMonth);
+	        } else {
+    		    intYear  = intNowYear;
+    		    strYear  = strNowYear; 
+    		    intMonth = intNowMonth;
+    		    strMonth = strNowMonth;     		    	        	
+	        }
+     	    entity.setDispYear(strYear);
+     	    entity.setDispMonth(strMonth);
 		    String strYM = strYear + strMonth;
-		    int intYear  = Integer.parseInt(strYear);
-		    int intMonth = Integer.parseInt(strMonth);
 	        int numOfDaysInMonth = cal.getNumOfDaysInMonth(intYear, intMonth);
-	        StringBuffer makeRosterHtml = new StringBuffer(); 
+            makeRosterHtml.append("<html>");
 		    // カレンダー日付の作成
 		    for (int intDay = 1; intDay <= numOfDaysInMonth; intDay++) {
 	            String strDay = Integer.toString(intDay);  // int型からstring型に変換
@@ -76,9 +91,15 @@ public class Roster {
 		} catch(Exception ex) {
     	    System.out.println(ex);
         }
+		return makeRosterHtml.toString();
     }
 	
-	protected String getHMS(LocalDateTime dateTime) {
+	/* 
+	 * カレンダークラスで取得した曜日を数値から文字列に変換
+	 * 第一引数 : LocalDateTimeクラス
+	 * 返り値 　: String HH時mm分ss秒
+	 */
+	private String getHMS(LocalDateTime dateTime) {
 		String strHour    = Integer.toString(dateTime.getHour()) + "時";
 		String strMinute = Integer.toString(dateTime.getMinute()) + "分";
 		String strSecond  = Integer.toString(dateTime.getSecond()) + "秒";

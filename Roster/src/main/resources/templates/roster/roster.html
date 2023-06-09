@@ -5,17 +5,15 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>勤怠管理表</title>
 </head>
-<script src="roster.js"></script>
-<link rel="stylesheet" href="roster.css">
+<script th:src="@{/js/roster.js}"></script> 
+<link th:href="@{/css/roster.css}" rel="stylesheet">
 <body onload="onLoad();">
 <form name="roster" action="/roster" method="POST">
   <div id="allArea" style="text-align:center;">
     <h2>勤怠管理表</h2>
     <div style="text-align:center;">
       <button type="button" style="margin-right:20px;" onClick="monthChange(true);">＜前月</button>
-        <span>
-			 "${strNowYear}"年"${strNowMonth}"月
-        </span>
+        <span th:text="${dispYear} + '年' + ${dispMonth} + '月'"></span>
       <button type="button" style="margin-left:20px;" onClick="monthChange(false);">翌月＞</button>
     </div>
     <div style="margin-top:20px;">
@@ -35,12 +33,12 @@
   </div>
   <!-- 隠し項目（パラメータ）-->
   <input type="hidden" name="startFlg" value="">
-  <input type="hidden" name="endFlg" value="">
-  <input type="hidden" name="strYear" value="">
+  <input type="hidden" name="endFlg"   value="">
+  <input type="hidden" name="strYear"  value="">
   <input type="hidden" name="strMonth" value="">
-  <input type="hidden" name="dispYM" value="${dispYM}">
-  <input type="hidden" name="nowYM" value="${nowYM}">
-  <input type="hidden" name="numYoubi" value="${nowNumYoubi}">
+  <input type="hidden" name="dispYM"   th:value="${dispYM}">
+  <input type="hidden" name="nowYM"    th:value="${nowYM}">
+  <input type="hidden" name="numYoubi" th:value="${nowNumYoubi}">
 </form>
 </body>
 </html>

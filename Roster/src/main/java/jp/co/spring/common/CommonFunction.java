@@ -62,11 +62,11 @@ public class CommonFunction {
         try {
             StringBuilder builder = new StringBuilder();
             int i = str.length();
-            if (digits >= i) {
+            if (i >= digits) {
             	return str;
             }
             // 指定された桁数になるまで０詰めする
-            while (i == digits) {
+            while (digits > i) {
             	builder.append(packStr);
             	i++;
             }
