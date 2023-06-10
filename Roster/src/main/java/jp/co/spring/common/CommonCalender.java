@@ -25,9 +25,6 @@ public class CommonCalender {
 	public String dispYoubi(int intNum) {
 	    String youbi = "";
         switch (intNum) {
-		    case 0: 
-			    youbi = "日";
-			    break;
 		    case 1: 
 		    	youbi = "月";
 			    break;
@@ -46,6 +43,9 @@ public class CommonCalender {
             case 6: 
             	youbi = "土";
                 break;
+		    case 7: 
+			    youbi = "日";
+			    break;
 	    }
         return youbi;
 	}

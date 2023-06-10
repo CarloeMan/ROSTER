@@ -7,7 +7,9 @@ import jp.co.spring.common.Constant;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public class Roster {
 
@@ -16,8 +18,9 @@ public class Roster {
 	CommonCalender cal = CommonCalender.getInstance();
 
 	// 表示する勤務表の作成
-	protected String makeRosterHtml(HashMap<String, Object> dataMap, RosterEntity entity) throws Exception {
-        StringBuilder makeRosterHtml = new StringBuilder(); 
+	protected int makeRosterHtml(HashMap<String, Object> dataMap, RosterEntity entity) throws Exception {
+		int sum = 0;
+		List<HashMap> dispRosterList = new ArrayList<>();
 		try {
 		    String startFlg = func.nullToSpace((String)dataMap.get("startFlg"));
 		    String endFlg = func.nullToSpace((String)dataMap.get("endFlg"));
@@ -46,25 +49,28 @@ public class Roster {
 	        }
      	    entity.setDispYear(strYear);
      	    entity.setDispMonth(strMonth);
+            //日付をLocalDate型に変換
+            LocalDate localDate = LocalDate.of(intYear, intMonth, Integer.parseInt(strNowDate));
+    		DayOfWeek dayOfWeek = localDate.getDayOfWeek();
+            int intNumYoubi = dayOfWeek.getValue(); //曜日を取得
+            entity.setIntNowYoubi(intNumYoubi);
 		    String strYM = strYear + strMonth;
 	        int numOfDaysInMonth = cal.getNumOfDaysInMonth(intYear, intMonth);
-            makeRosterHtml.append("<html>");
 		    // カレンダー日付の作成
 		    for (int intDay = 1; intDay <= numOfDaysInMonth; intDay++) {
+		    	HashMap map = new HashMap<String, Object>();
 	            String strDay = Integer.toString(intDay);  // int型からstring型に変換
 	            String strYMD = strYM + strDay;
 	            //日付をLocalDate型に変換
-	            LocalDate localDate = LocalDate.of(intYear, intMonth, intDay);
-	    		DayOfWeek dayOfWeek = localDate.getDayOfWeek();
+	            localDate = LocalDate.of(intYear, intMonth, intDay);
+	    		dayOfWeek = localDate.getDayOfWeek();
 	            int numYoubi = dayOfWeek.getValue(); //曜日を取得
 	            String dispYoubi = cal.dispYoubi(numYoubi);
+	            map.put("dispYoubi", dispYoubi);
 	            strDay = func.lpad(strDay, 2, "0", true);  // 1桁の場合、前0詰めの2桁表示
-	            makeRosterHtml.append("<tr>");
-	            makeRosterHtml.append("<td class=\"dispDay\">");
-	            makeRosterHtml.append(strMonth).append("月").append(strDay).append("日 (").append(dispYoubi).append(")");
-	            makeRosterHtml.append("</td>");
-	            makeRosterHtml.append("<td>");
-	            makeRosterHtml.append("<span id=\"").append(strMonth + strDay).append("start\">");
+	            map.put("strMonth", strMonth);
+	            map.put("strDay", strDay);
+	            map.put("strMDstart", strMonth+strDay+"start");	            
 	            // 業務開始（本日付）
 	            String startTime = "";
 	            if (strNowYmd.equals(strYMD) && Constant.FLG_ON.equals(startFlg)) {
@@ -72,11 +78,8 @@ public class Roster {
 	            } else if (numYoubi == 0 || numYoubi == 6) {
 	            	startTime = "―";
 	            }
-	            makeRosterHtml.append(startTime);
-	            makeRosterHtml.append("</span>");
-	            makeRosterHtml.append("</td>");
-	            makeRosterHtml.append("<td>");
-	            makeRosterHtml.append("<span id=\"").append(strMonth + strDay).append("end\">");
+	            map.put("startTime", startTime);	            	            
+	            map.put("strMDend", strMonth+strDay+"end");	            
 	            // 業務終了（本日付）
 	            String endTime = "";
 	            if (strNowYmd.equals(strYMD) && Constant.FLG_ON.equals(endFlg)) {
@@ -84,14 +87,15 @@ public class Roster {
 	            } else if (numYoubi == 0 || numYoubi == 6) {
 	            	endTime = "―";
 	            } 
-	            makeRosterHtml.append(endTime);
-	            makeRosterHtml.append("</td>");
-	            makeRosterHtml.append("</tr>");
+	            map.put("endTime", endTime);
+	            dispRosterList.add(map);
+	            sum++;
 		    }
+		    entity.setDispRosterList(dispRosterList);
 		} catch(Exception ex) {
     	    System.out.println(ex);
         }
-		return makeRosterHtml.toString();
+		return sum;
     }
 	
 	/* 
