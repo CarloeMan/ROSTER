@@ -18,7 +18,7 @@ public class Roster {
 	CommonCalender cal = CommonCalender.getInstance();
 
 	// 表示する勤務表の作成
-	protected int makeRosterHtml(HashMap<String, Object> dataMap, RosterEntity entity) throws Exception {
+	protected int makeRoster(HashMap<String, Object> dataMap, RosterEntity entity) throws Exception {
 		int sum = 0;
 		List<HashMap> dispRosterList = new ArrayList<>();
 		try {
@@ -75,7 +75,7 @@ public class Roster {
 	            String startTime = "";
 	            if (strNowYmd.equals(strYMD) && Constant.FLG_ON.equals(startFlg)) {
 	            	startTime = getHMS(dateTime);
-	            } else if (numYoubi == 0 || numYoubi == 6) {
+	            } else if (numYoubi == 6 || numYoubi == 7) {
 	            	startTime = "―";
 	            }
 	            map.put("startTime", startTime);	            	            
@@ -84,7 +84,7 @@ public class Roster {
 	            String endTime = "";
 	            if (strNowYmd.equals(strYMD) && Constant.FLG_ON.equals(endFlg)) {
 	            	endTime = getHMS(dateTime);
-	            } else if (numYoubi == 0 || numYoubi == 6) {
+	            } else if (numYoubi == 6 || numYoubi == 7) {
 	            	endTime = "―";
 	            } 
 	            map.put("endTime", endTime);

@@ -18,7 +18,7 @@ public class RosterController {
 	@RequestMapping("/roster")
     public ModelAndView roster(ModelAndView mav) throws Exception{
     	RosterEntity entity = new RosterEntity();
-    	roster.makeRosterHtml(new HashMap<String, Object>(), entity);
+    	roster.makeRoster(new HashMap<String, Object>(), entity);
     	String dispYear  = entity.getDispYear();
     	String dispMonth = entity.getDispMonth();
     	String nowYear  = entity.getNowYear();

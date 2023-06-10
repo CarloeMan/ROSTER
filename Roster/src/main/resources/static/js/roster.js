@@ -55,9 +55,9 @@ function onLoad() {
 // formタグ内のパラメータ値submit
 function frmSubmit(startflg) {
     setBtnDisabled(true);
-    var intYoubi = document.getElementsByName("intNowYoubi")[0].value;
+    var nowYoubi = document.getElementsByName("nowYoubi")[0].value;
     let msg;
-    if (startflg && (intYoubi == 0 || intYoubi == 6)) {
+    if (startflg && (nowYoubi == "6" || nowYoubi == "7")) {
         msg = "本日はカレンダー日付では休日ですが、出勤しますか？";
         if (!window.confirm(msg)) {
             setBtnDisabled(false);
