@@ -18,14 +18,14 @@ public class Roster {
 	CommonCalender cal = CommonCalender.getInstance();
 
 	// 表示する勤務表の作成
-	protected int makeRoster(HashMap<String, Object> dataMap, RosterEntity entity) throws Exception {
+	protected int makeRoster(HashMap<String, String> params, RosterEntity entity) throws Exception {
 		int sum = 0;
 		List<HashMap> dispRosterList = new ArrayList<>();
 		try {
-		    String startFlg = func.nullToSpace((String)dataMap.get("startFlg"));
-		    String endFlg = func.nullToSpace((String)dataMap.get("endFlg"));
-		    String strYear = func.nullToSpace((String)dataMap.get("strYear"));
-		    String strMonth = func.nullToSpace((String)dataMap.get("strMonth"));
+		    String startFlg = func.nullToSpace((String)params.get("startFlg"));
+		    String endFlg = func.nullToSpace((String)params.get("endFlg"));
+		    String strYear = func.nullToSpace((String)params.get("dispYear"));
+		    String strMonth = func.nullToSpace((String)params.get("dispMonth"));
 		    LocalDateTime dateTime = LocalDateTime.now();
 		    int intNowYear = dateTime.getYear();
 		    String strNowYear  = Integer.toString(intNowYear);
@@ -58,7 +58,7 @@ public class Roster {
 	        int numOfDaysInMonth = cal.getNumOfDaysInMonth(intYear, intMonth);
 		    // カレンダー日付の作成
 		    for (int intDay = 1; intDay <= numOfDaysInMonth; intDay++) {
-		    	HashMap map = new HashMap<String, Object>();
+		    	HashMap<String, Object> map = new HashMap<String, Object>();
 	            String strDay = Integer.toString(intDay);  // int型からstring型に変換
 	            String strYMD = strYM + strDay;
 	            //日付をLocalDate型に変換
@@ -74,7 +74,7 @@ public class Roster {
 	            // 業務開始（本日付）
 	            String startTime = "";
 	            if (strNowYmd.equals(strYMD) && Constant.FLG_ON.equals(startFlg)) {
-	            	startTime = getHMS(dateTime);
+	            	startTime = cal.getHMS(dateTime);
 	            } else if (numYoubi == 6 || numYoubi == 7) {
 	            	startTime = "―";
 	            }
@@ -83,7 +83,7 @@ public class Roster {
 	            // 業務終了（本日付）
 	            String endTime = "";
 	            if (strNowYmd.equals(strYMD) && Constant.FLG_ON.equals(endFlg)) {
-	            	endTime = getHMS(dateTime);
+	            	endTime = cal.getHMS(dateTime);
 	            } else if (numYoubi == 6 || numYoubi == 7) {
 	            	endTime = "―";
 	            } 
@@ -97,16 +97,4 @@ public class Roster {
         }
 		return sum;
     }
-	
-	/* 
-	 * カレンダークラスで取得した曜日を数値から文字列に変換
-	 * 第一引数 : LocalDateTimeクラス
-	 * 返り値 　: String HH時mm分ss秒
-	 */
-	private String getHMS(LocalDateTime dateTime) {
-		String strHour    = Integer.toString(dateTime.getHour()) + "時";
-		String strMinute = Integer.toString(dateTime.getMinute()) + "分";
-		String strSecond  = Integer.toString(dateTime.getSecond()) + "秒";
-		return strHour + strMinute + strSecond; 
-	}
 }

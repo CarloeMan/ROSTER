@@ -1,5 +1,6 @@
 package jp.co.spring.common;
 
+import java.time.LocalDateTime;
 import java.util.Calendar;
 
 public class CommonCalender {
@@ -59,9 +60,23 @@ public class CommonCalender {
 	public int getNumOfDaysInMonth (int year, int month) {
 	    Calendar calender = Calendar.getInstance();
 	    calender.clear();
-	    calender.set(year, month, 1);
-	    int numOfDaysInMonth = calender.getActualMaximum(Calendar.DATE) - calender.get(Calendar.DATE);
+	    calender.set(Calendar.YEAR, year);
+	    calender.set(Calendar.MONTH, month-1);
+	    int numOfDaysInMonth = calender.getActualMaximum(Calendar.DATE);
 	    return numOfDaysInMonth;
 	}
+	
+	/* 
+	 * カレンダークラスで取得した曜日を数値から文字列に変換し、「HH時mm分ss秒」の形式で表示する
+	 * 第一引数 : LocalDateTimeクラス
+	 * 返り値 　: String HH時mm分ss秒
+	 */
+	public String getHMS(LocalDateTime dateTime) {
+		String strHour    = Integer.toString(dateTime.getHour()) + "時";
+		String strMinute = Integer.toString(dateTime.getMinute()) + "分";
+		String strSecond  = Integer.toString(dateTime.getSecond()) + "秒";
+		return strHour + strMinute + strSecond; 
+	}
+
 
 }

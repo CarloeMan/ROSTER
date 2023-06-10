@@ -30,6 +30,8 @@ function monthChange(agoflg) {
         dispMonth = intMonth.toString();
     }
     dispYM = dispYear + dispMonth;
+    document.getElementsByName("dispYear")[0].value = dispYear;
+    document.getElementsByName("dispMonth")[0].value = dispMonth;
     document.getElementsByName("dispYM")[0].value = dispYM;
     document.roster.submit();
 }
@@ -42,14 +44,17 @@ function onLoad() {
     if (dispYM != nowYM) {
         document.getElementsByName("btnStart")[0].style.display ="none"; // 業務開始ボタン
         document.getElementsByName("btnEnd")[0].style.display ="none";   // 業務終了ボタン
-    }
-    if (document.getElementsByName("startFlg")[0].value == "1") {
+	}
+    if (document.getElementsByName("startFlg")[0].value == ON_FLG) {
         document.getElementsByName("startFlg")[0].value = "";
     }
-    if (document.getElementsByName("endFlg")[0].value == "1") {
+    if (document.getElementsByName("endFlg")[0].value == ON_FLG) {
         document.getElementsByName("endFlg")[0].value = "";    
     }
     setBtnDisabled(false);
+    if (dispYM == nowYM) {
+        document.getElementsByName("btnNextMonth")[0].disabled = true;
+	}
 }
 
 // formタグ内のパラメータ値submit

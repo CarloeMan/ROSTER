@@ -14,7 +14,7 @@
     <div style="text-align:center;">
       <button type="button" style="margin-right:20px;" onClick="monthChange(true);">＜前月</button>
         <span th:text="${dispYear} + '年' + ${dispMonth} + '月'"></span>
-      <button type="button" style="margin-left:20px;" onClick="monthChange(false);">翌月＞</button>
+      <button type="button" name="btnNextMonth" style="margin-left:20px;" onClick="monthChange(false);">翌月＞</button>
     </div>
     <div style="margin-top:20px;">
       <button type="button" name="btnStart" style="margin-right:20px;" onClick="frmSubmit(true);">業務開始</button>
@@ -44,8 +44,8 @@
   <!-- 隠し項目（パラメータ）-->
   <input type="hidden" name="startFlg" value="">
   <input type="hidden" name="endFlg"   value="">
-  <input type="hidden" name="strYear"  value="">
-  <input type="hidden" name="strMonth" value="">
+  <input type="hidden" name="dispYear"  value="">
+  <input type="hidden" name="dispMonth" value="">
   <input type="hidden" name="dispYM"   th:value="${dispYM}">
   <input type="hidden" name="nowYM"    th:value="${nowYM}">
   <input type="hidden" name="nowYoubi" th:value="${intNowYoubi}">
